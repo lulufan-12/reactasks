@@ -6,13 +6,13 @@ import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons'
 
 const TaskTable = props => {
 
-    const tarefas = props.tarefas
-    let tarefasFormatadas = null
-    if(tarefas.length <= 0){
-        tarefasFormatadas = <h3 style={{textAlign: "center"}}>Não há nenhuma tarefa.</h3>
+    const tasks = props.tasks
+    let prettyTasks = null
+    if(tasks.length <= 0){
+        prettyTasks = <h3 style={{textAlign: "center", padding: "5px"}}>Não há nenhuma tarefa.</h3>
     }
     else{
-        tarefasFormatadas = tarefas.map((t, k) => {
+        prettyTasks = tasks.map((t, k) => {
             return (
                 <div key={t.id}>
                     <Card.Header style={{display: 'flex',
@@ -24,11 +24,11 @@ const TaskTable = props => {
                             </h5>
                         </Accordion.Toggle>
                         <div>
-                            <Button variant="warning" onClick={() => props.atualizarTarefa(k)}>
+                            <Button variant="warning" onClick={() => props.updateTask(k)}>
                                 <FontAwesomeIcon icon={faEdit}/>
                             </Button>
                             {' '}
-                            <Button variant="danger" onClick={() => props.excluirTarefa(k)}>
+                            <Button variant="danger" onClick={() => props.deleteTask(k)}>
                                 <FontAwesomeIcon icon={faTrash}/>
                             </Button>
                         </div>
@@ -46,13 +46,15 @@ const TaskTable = props => {
     return (
         <Accordion>
             <Card>
-                {tarefasFormatadas}
+                {prettyTasks}
             </Card>
         </Accordion>
     )
 }
 
 TaskTable.propTypes = {
-    tarefas: PropTypes.array
+    tasks: PropTypes.array.isRequired,
+    updateTask: PropTypes.func.isRequired,
+    deleteTask: PropTypes.func.isRequired
 }
 export default TaskTable

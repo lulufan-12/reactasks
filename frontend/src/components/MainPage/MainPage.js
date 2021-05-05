@@ -24,22 +24,21 @@ export const MainPage = () => {
                         ferramentas tanto no lado do frontend como no backend.
 
                         Abaixo está a lista de recursos utilizados e explorados:
-
-                        <ul>
-                            <li>React</li>
-                            <li>React Router Dom</li>
-                            <li>React Router Bootstrap</li>
-                            <li>React-Bootstrap</li>
-                            <li>Axios</li>
-                            <li>Font Awesome</li>
-                            <li>Cors</li>
-                            <li>ExpressJS</li>
-                            <li>Knex</li>
-                            <li>Sqlite3</li>
-                            <li>ValidatorJS</li>
-                            <li>E muito mais!</li>
-                        </ul>
                     </p>
+                    <ul>
+                        <li>React</li>
+                        <li>React Router Dom</li>
+                        <li>React Router Bootstrap</li>
+                        <li>React-Bootstrap</li>
+                        <li>Axios</li>
+                        <li>Font Awesome</li>
+                        <li>Cors</li>
+                        <li>ExpressJS</li>
+                        <li>Knex</li>
+                        <li>Sqlite3</li>
+                        <li>ValidatorJS</li>
+                        <li>E muito mais!</li>
+                    </ul>
                 </Card.Body>
                 <Card.Footer>
                     <Footer />

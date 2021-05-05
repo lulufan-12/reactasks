@@ -11,21 +11,22 @@ const modal = props => {
             </Modal.Header>
 
             <Modal.Body>
-                <p>Deseja realmente excluir a tarefa: <strong>{props.tarefaTitle}</strong></p>
+                <p>Deseja realmente excluir a tarefa: <strong>{props.taskTitle}</strong></p>
             </Modal.Body>
 
             <Modal.Footer>
                 <Button variant="secondary" onClick={props.modalOnClose}>Cancelar</Button>
-                <Button variant="danger" onClick={props.excluirTarefa}>Excluir</Button>
+                <Button variant="danger" onClick={props.deleteTask}>Excluir</Button>
             </Modal.Footer>
         </Modal>
     )
 }
 
 modal.propTypes = {
-    showModal: PropTypes.bool,
-    modalOnClose: PropTypes.func,
-    excluirTarefa: PropTypes.func
+    showModal: PropTypes.bool.isRequired,
+    modalOnClose: PropTypes.func.isRequired,
+    deleteTask: PropTypes.func.isRequired,
+    taskTitle: PropTypes.string.isRequired
 }
 
 export default modal

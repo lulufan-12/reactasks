@@ -4,11 +4,10 @@ import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import PropTypes from 'prop-types'
 
-
 const modal = props => {
     return (
         <Modal show={props.showModal} onHide={props.modalOnClose} backdrop="static">
-            <Form onSubmit={props.submitted}>
+            <Form onSubmit={props.formSubmitted}>
                 <Modal.Header closeButton>
                     <Modal.Title>Alterar Tarefa</Modal.Title>
                 </Modal.Header>
@@ -20,7 +19,7 @@ const modal = props => {
                             <Form.Control value={props.title}
                                 type="text"
                                 placeholder="Título da Tarefa"
-                                onChange={props.changedT} />
+                                onChange={props.titleChanged} />
                         </Form.Group>
             
                         <Form.Group controlId="formBasicDescription">
@@ -28,7 +27,7 @@ const modal = props => {
                             <Form.Control value={props.message}
                                 as="textarea"
                                 placeholder="Descrição da Tarefa"
-                                onChange={props.changedM} />
+                                onChange={props.messageChanged} />
                         </Form.Group>
                     
                 </Modal.Body>
@@ -44,9 +43,12 @@ const modal = props => {
 }
 
 modal.propTypes = {
-    showModal: PropTypes.bool,
-    modalOnClose: PropTypes.func,
-    atualizarTarefa: PropTypes.func
+    showModal: PropTypes.bool.isRequired,
+    title: PropTypes.string.isRequired,
+    message: PropTypes.string.isRequired,
+    titleChanged: PropTypes.func.isRequired,
+    messageChanged: PropTypes.func.isRequired,
+    modalOnClose: PropTypes.func.isRequired
 }
 
 export default modal

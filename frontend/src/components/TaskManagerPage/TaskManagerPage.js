@@ -12,10 +12,10 @@ export default class TaskManagerPage extends Component {
     constructor(){
         super();
         this.state = {
-            tarefas: [],
-            tarefaTitle: "",
-            tarefaMessage: "",
-            tarefaSelecionada: null,
+            tasks: [],
+            taskTitle: "",
+            taskMessage: "",
+            selectedTask: null,
             showModalDelete: false,
             showModalUpdate: false
         }
@@ -31,38 +31,36 @@ export default class TaskManagerPage extends Component {
     async componentDidMount(){
         try{
             const response = await axios.get(URL)
-            if(response.status === 200){
-                this.setState({
-                    tarefas: response.data.data
-                })
-            }
+            this.setState({
+                tasks: response.data.data
+            })
         }
         catch(err){
-            console.log("Um erro ocorreu: ", err.message)
+            console.log(err.response.data.message)
         }
     }
 
     handleModalClose(){
         const showModalDelete = false
         const showModalUpdate = false
-        const tarefaSelecionada = null
-        const tarefaTitle = ''
-        const tarefaMessage = ''
+        const selectedTask = null
+        const taskTitle = ''
+        const taskMessage = ''
         this.setState({
             showModalDelete,
             showModalUpdate,
-            tarefaSelecionada,
-            tarefaTitle,
-            tarefaMessage
+            selectedTask,
+            taskTitle,
+            taskMessage
         })
     }
 
     async handleUpdateTask(e){
         e.preventDefault()
-        const title = this.state.tarefaTitle
-        const message = this.state.tarefaMessage
-        const key = this.state.tarefaSelecionada
-        const id = this.state.tarefas[key].id
+        const title = this.state.taskTitle
+        const message = this.state.taskMessage
+        const key = this.state.selectedTask
+        const id = this.state.tasks[key].id
         const data = {
             id,
             title,
@@ -76,11 +74,11 @@ export default class TaskManagerPage extends Component {
 
         try{
             await axios.put(URL, data)
-            const tarefas = this.state.tarefas
-            tarefas.splice(key, 1, data)
+            const tasks = this.state.tasks
+            tasks.splice(key, 1, data)
         }
         catch(err) {
-            console.log(err.response)
+            console.log(err.response.data.message)
         }
         finally{
             this.handleModalClose()
@@ -88,22 +86,21 @@ export default class TaskManagerPage extends Component {
     }
 
     async handleDeleteTask(){
-        const key = this.state.tarefaSelecionada
-        const tarefa = this.state.tarefas[key]
+        const key = this.state.selectedTask
+        const task = this.state.tasks[key]
         
         try{
-            const response = await axios.delete(URL, {
+            await axios.delete(URL, {
                 data: {
-                    id: tarefa.id
+                    id: task.id
                 }
             })
-            console.log(response)
-            const tarefas = this.state.tarefas
-            tarefas.splice(key, 1)
-            this.setState({tarefas})
+            const tasks = this.state.tasks
+            tasks.splice(key, 1)
+            this.setState({tasks})
         }
-        catch(e){
-            console.log("Um erro ocorreu ao excluir a tarefa")
+        catch(err){
+            console.log(err.response.data.message)
         }finally{
             this.handleModalClose()
         }
@@ -111,32 +108,32 @@ export default class TaskManagerPage extends Component {
 
     handleShowModalDeleteTask(key){
         const showModalDelete = true
-        const tarefaTitle = this.state.tarefas[key].title
-        const tarefaSelecionada = key
-        this.setState({showModalDelete, tarefaTitle, tarefaSelecionada})
+        const taskTitle = this.state.tasks[key].title
+        const selectedTask = key
+        this.setState({showModalDelete, taskTitle, selectedTask})
     }
 
     handleShowModalUpdateTask(key){
         const showModalUpdate = true
-        const tarefaSelecionada = key
-        const tarefaTitle = this.state.tarefas[key].title
-        const tarefaMessage = this.state.tarefas[key].message
+        const selectedTask = key
+        const taskTitle = this.state.tasks[key].title
+        const taskMessage = this.state.tasks[key].message
         this.setState({
             showModalUpdate,
-            tarefaSelecionada,
-            tarefaTitle,
-            tarefaMessage
+            selectedTask,
+            taskTitle,
+            taskMessage
         })
     }
 
     handleChangeTitle(e){
-        const tarefaTitle = e.target.value
-        this.setState({tarefaTitle})
+        const taskTitle = e.target.value
+        this.setState({taskTitle})
     }
 
     handleChangeMessage(e){
-        const tarefaMessage = e.target.value
-        this.setState({tarefaMessage})
+        const taskMessage = e.target.value
+        this.setState({taskMessage})
     }
 
     render() {
@@ -144,26 +141,26 @@ export default class TaskManagerPage extends Component {
             <Container fluid="sm">
                 <ModalDelete showModal={this.state.showModalDelete}
                     modalOnClose={this.handleModalClose}
-                    tarefaTitle={this.state.tarefaTitle}
-                    excluirTarefa={this.handleDeleteTask} />
+                    taskTitle={this.state.taskTitle}
+                    deleteTask={this.handleDeleteTask} />
 
                 <ModalUpdate showModal={this.state.showModalUpdate}
                     modalOnClose={this.handleModalClose}
-                    submitted={this.handleUpdateTask}
-                    title={this.state.tarefaTitle}
-                    message={this.state.tarefaMessage}
-                    changedT={this.handleChangeTitle}
-                    changedM={this.handleChangeMessage} />
+                    formSubmitted={this.handleUpdateTask}
+                    title={this.state.taskTitle}
+                    message={this.state.taskMessage}
+                    titleChanged={this.handleChangeTitle}
+                    messageChanged={this.handleChangeMessage} />
 
                 <Card>
                     <Card.Header>
-                        <h1>Gerenciar Tarefas</h1>
+                        <h1>Gerenciar tasks</h1>
                     </Card.Header>
                     <Card.Body>
 
-                        <TaskTable tarefas={this.state.tarefas}
-                            excluirTarefa={this.handleShowModalDeleteTask}
-                            atualizarTarefa={this.handleShowModalUpdateTask} />
+                        <TaskTable tasks={this.state.tasks}
+                            deleteTask={this.handleShowModalDeleteTask}
+                            updateTask={this.handleShowModalUpdateTask} />
 
                     </Card.Body>
                     <Card.Footer>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Container, Alert, Card } from 'react-bootstrap'
-import { CreateTaskForm } from '../CreateTaskForm/CreateTaskForm'
+import CreateTaskForm from '../CreateTaskForm/CreateTaskForm'
 import Footer from '../Footer/Footer'
 
 const axios = require('axios')
@@ -43,42 +43,33 @@ export default class CreateTaskPage extends Component {
 
     async handleFormSubmit(e){
         e.preventDefault()
-        this.setState({showAlert: false})
-        const title = this.state.title
-        const message = this.state.message
-        
-        if(title.trim() === '' || message.trim() === ''){
-            const response = 'Preencha todos os campos.'
-            this.setState({
-                response,
-                showAlert: true,
-                alertVariant: 'danger'
-            })
-            return
-        }
 
         let result = null
-        
+        const title = this.state.title
+        const message = this.state.message
         try{
             result = await axios.post(URL, {
                 title,
                 message
             })
-            const response = result.data.message
-            this.setState({
-                response,
-                showAlert: true,
-                alertVariant: 'success'
-            })
-            this.cleanState()
+            if(result.status === 200){
+                const response = result.data.message
+                this.setState({
+                    response,
+                    showAlert: true,
+                    alertVariant: 'success'
+                })    
+            }
         }
         catch(err){
-            const response = err.message
+            const response = err.response.data.message
             this.setState({
                 response,
                 showAlert: true,
                 alertVariant: 'danger'
             })
+        }
+        finally{
             this.cleanState()
         }
     }
@@ -92,12 +83,12 @@ export default class CreateTaskPage extends Component {
                     </Card.Header>
                     <Card.Body>
                         <CreateTaskForm
-                        submitted={this.handleFormSubmit}
-                        clicked={this.cleanState}
+                        formSubmitted={this.handleFormSubmit}
+                        cancelClicked={this.cleanState}
                         title={this.state.title}
                         message={this.state.message}
-                        changedT={this.handleTitleChange}
-                        changedM={this.handleMessageChange} />
+                        titleChanged={this.handleTitleChange}
+                        messageChanged={this.handleMessageChange} />
                         <br />
                         <Alert show={this.state.showAlert}
                             onClose={() => this.setState({showAlert: false})}

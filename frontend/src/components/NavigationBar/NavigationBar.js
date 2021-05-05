@@ -4,9 +4,9 @@ import { LinkContainer } from 'react-router-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHome, faPlus, faTasks } from '@fortawesome/free-solid-svg-icons'
 
-const navigation = () => {
+const navigationBar = () => {
     return (
-        <Navbar bg="dark" variant="dark">
+        <Navbar bg="dark" variant="dark" expand="sm">
             <Container fluid="sm">
                 <Navbar.Brand>
                     ReacTasks
@@ -44,4 +44,4 @@ const navigation = () => {
         </Navbar>
     )
 }
-export default navigation
+export default navigationBar

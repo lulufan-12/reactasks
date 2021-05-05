@@ -1,19 +1,19 @@
 import React from 'react'
 import { Form, Button } from 'react-bootstrap'
-
+import propTypes from 'prop-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEraser, faCalendarPlus } from '@fortawesome/free-solid-svg-icons'
 
-export const CreateTaskForm = (props) => {
+const CreateTaskForm = (props) => {
     return (
-        <Form onSubmit={props.submitted}>
+        <Form onSubmit={props.formSubmitted}>
                     
             <Form.Group controlId="formBasicTitle">
                 <Form.Label>Título</Form.Label>
                 <Form.Control value={props.title}
                     type="text"
                     placeholder="Título da Tarefa"
-                    onChange={props.changedT} />
+                    onChange={props.titleChanged} />
             </Form.Group>
 
             <Form.Group controlId="formBasicDescription">
@@ -21,7 +21,7 @@ export const CreateTaskForm = (props) => {
                 <Form.Control value={props.message}
                     as="textarea"
                     placeholder="Descrição da Tarefa"
-                    onChange={props.changedM} />
+                    onChange={props.messageChanged} />
             </Form.Group>
 
             <Button variant="primary" type="submit">
@@ -29,10 +29,21 @@ export const CreateTaskForm = (props) => {
                 {' '} Criar Tarefa
             </Button>{' '}
             
-            <Button variant="secondary" type="button" onClick={props.clicked}>
+            <Button variant="secondary" type="button" onClick={props.cancelClicked}>
                 <FontAwesomeIcon icon={faEraser} />
                 {' '} Limpar
             </Button>
         </Form>
     )
 }
+
+CreateTaskForm.propTypes = {
+    formSubmitted: propTypes.func.isRequired,
+    title: propTypes.string.isRequired,
+    titleChanged: propTypes.func.isRequired,
+    message: propTypes.string.isRequired,
+    messageChanged: propTypes.func.isRequired,
+    cancelClicked: propTypes.func.isRequired
+}
+
+export default CreateTaskForm
